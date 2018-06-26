@@ -69,5 +69,40 @@ namespace BookManager
                 connection.Close();
             }
         }
+
+        public void removeSelectedHistory(DataGridView dataGridView)
+        {
+
+            try
+            {
+                if (dataGridView.SelectedCells.Count > 0)
+                {
+                    int selectedRowIndex = dataGridView.SelectedCells[0].RowIndex;
+                    DataGridViewRow selectedRow = dataGridView.Rows[selectedRowIndex];
+                    
+                    int historyId = int.Parse(selectedRow.Cells["id"].Value.ToString());
+
+                    connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+
+                    connection.Open();
+
+                    string removeQuery = "DELETE FROM history WHERE id = @historyId";
+
+                    MySqlCommand cmd = new MySqlCommand(removeQuery, connection);
+                    cmd.Parameters.AddWithValue("historyId", historyId);
+                    cmd.ExecuteNonQuery();
+                    historyGridViewConnect(dataGridView);
+                }
+            } catch (Exception exception)
+            {
+                MessageBox.Show("이상한곳을 클릭하셨나요?");
+            } finally
+            {
+                if(connection != null)
+                {
+                    connection.Close();
+                }
+            }
+        }
     }
 }

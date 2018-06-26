@@ -24,7 +24,7 @@ namespace BookManager
         {
             string adminId = textBox1.Text.ToString();
             string adminPassword = textBox2.Text.ToString();
-            string selectQuery = "SELECT * FROM admin WHERE adminId=@adminId";
+            string selectQuery = "SELECT * FROM admin WHERE adminId = @adminId";
 
 
             connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
@@ -38,7 +38,7 @@ namespace BookManager
                 cmd.Parameters.AddWithValue("@adminId", adminId);
                 MySqlDataReader rd = cmd.ExecuteReader();
 
-                int count = 0;
+                
                 if (rd.Read())
                 {
                     if (rd["adminPassword"].ToString() != adminPassword)

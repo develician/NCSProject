@@ -31,6 +31,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.historyGridView = new System.Windows.Forms.DataGridView();
             this.removeButton = new System.Windows.Forms.Button();
+            this.selectedRemoveButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.historyGridView)).BeginInit();
             this.SuspendLayout();
@@ -57,18 +58,28 @@
             // 
             // removeButton
             // 
-            this.removeButton.Location = new System.Drawing.Point(664, 43);
+            this.removeButton.Location = new System.Drawing.Point(546, 43);
             this.removeButton.Name = "removeButton";
             this.removeButton.Size = new System.Drawing.Size(99, 23);
             this.removeButton.TabIndex = 1;
             this.removeButton.Text = "모든 기록 삭제";
             this.removeButton.UseVisualStyleBackColor = true;
             // 
+            // selectedRemoveButton
+            // 
+            this.selectedRemoveButton.Location = new System.Drawing.Point(651, 43);
+            this.selectedRemoveButton.Name = "selectedRemoveButton";
+            this.selectedRemoveButton.Size = new System.Drawing.Size(118, 23);
+            this.selectedRemoveButton.TabIndex = 2;
+            this.selectedRemoveButton.Text = "선택된 기록 삭제";
+            this.selectedRemoveButton.UseVisualStyleBackColor = true;
+            // 
             // HistoryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 488);
+            this.Controls.Add(this.selectedRemoveButton);
             this.Controls.Add(this.removeButton);
             this.Controls.Add(this.groupBox1);
             this.Name = "HistoryForm";
@@ -84,5 +95,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView historyGridView;
         private System.Windows.Forms.Button removeButton;
+        private System.Windows.Forms.Button selectedRemoveButton;
     }
 }

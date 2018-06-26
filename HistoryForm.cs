@@ -20,20 +20,33 @@ namespace BookManager
             dbHistory.historyGridViewConnect(historyGridView);
 
             historyGridView.ReadOnly = true;
-            historyGridView.Columns[0].HeaderText = "사용자 번호";
-            historyGridView.Columns[1].HeaderText = "사용자 이름";
-            historyGridView.Columns[2].HeaderText = "빌린 날짜";
-            historyGridView.Columns[3].HeaderText = "반납 날짜";
-            historyGridView.Columns[4].HeaderText = "책 이름";
-            historyGridView.Columns[5].HeaderText = "책 번호";
+
+            historyGridView.Columns[0].HeaderText = "기록 번호";
+            historyGridView.Columns[1].HeaderText = "사용자 번호";
+            historyGridView.Columns[2].HeaderText = "사용자 이름";
+            historyGridView.Columns[3].HeaderText = "빌린 날짜";
+            historyGridView.Columns[4].HeaderText = "반납 날짜";
+            historyGridView.Columns[5].HeaderText = "책 이름";
+            historyGridView.Columns[6].HeaderText = "책 번호";
 
             removeButton.Click += removeButtonClick;
+            selectedRemoveButton.Click += removeSelected;
+            
+            
         }
+
+        
 
         private void removeButtonClick(object sender, EventArgs e)
         {
             DBHistory dbHistory = new DBHistory();
             dbHistory.removeAllHistory(historyGridView);
+        }
+
+        private void removeSelected(object sender, EventArgs e)
+        {
+            DBHistory dBHistory = new DBHistory();
+            dBHistory.removeSelectedHistory(historyGridView);
         }
 
      

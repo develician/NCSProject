@@ -7,20 +7,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace BookManager
 {
+    public struct COPYDATASTRUCT
+    {
+        public IntPtr dwData;
+        public int cbData;
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string lpData;
+    }
+
+
     public partial class Form1 : Form
     {
+        public const int WM_COPYDATA = 0x4A;
+        
+        [DllImport("User32.dll")]
+        public static extern IntPtr FindWindow(String lpClassName, String lpWindowName);
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
+
+
         public Form1()
         {
             InitializeComponent();
             Text = "도서관 관리";
 
             DBUtils.DBUser dBUser = new DBUtils.DBUser();
+            DBUtils.DBBook dBBook = new DBUtils.DBBook();
 
             // 라벨 설정
-            label5.Text = DataManager.Books.Count.ToString();
+            //label5.Text = DataManager.Books.Count.ToString();
+            label5.Text = dBBook.getBookCount().ToString();
             label6.Text = DataManager.Users.Count.ToString();
             label7.Text = DataManager.Books.Where((x) => x.isBorrowed).Count().ToString();
             label8.Text = DataManager.Books.Where((x) =>
@@ -29,7 +49,8 @@ namespace BookManager
             }).Count().ToString();
 
             // 데이터 그리드 설정
-            dataGridView1.DataSource = DataManager.Books;
+            //dataGridView1.DataSource = DataManager.Books;
+            dBBook.bookDataGridViewConnect(dataGridView1);
             dataGridView1.ReadOnly = true;
 
             //dataGridView2.DataSource = DataManager.Users;
@@ -47,17 +68,35 @@ namespace BookManager
 
         private void DataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
-            try
-            {
-                // 그리드의 셀이 선택되면 텍스트박스에 글자 지정
-                Book book = dataGridView1.CurrentRow.DataBoundItem as Book;
-                textBox1.Text = book.Isbn;
-                textBox2.Text = book.Name;
-            }
-            catch (Exception exception)
-            {
 
-            }
+            //if (dataGridView1.SelectedCells.Count > 0)
+            //{
+            //    int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+            //    DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+
+            //    int bookIsbn = int.Parse(selectedRow.Cells["isbn"].Value.ToString());
+
+            //    MessageBox.Show(bookIsbn.ToString());
+            //}
+
+
+
+
+
+            //try
+            //{
+
+
+
+            //    // 그리드의 셀이 선택되면 텍스트박스에 글자 지정
+            //    Book book = dataGridView1.CurrentRow.DataBoundItem as Book;
+            //    textBox1.Text = book.Isbn;
+            //    textBox2.Text = book.Name;
+            //}
+            //catch (Exception exception)
+            //{
+
+            //}
         }
 
         private void DataGridView2_CurrentCellChanged(object sender, EventArgs e)
@@ -162,7 +201,7 @@ namespace BookManager
 
         private void 도서관리ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Form2().ShowDialog();
+            new Form2().Show();
         }
 
         private void 사용자관리ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -175,5 +214,40 @@ namespace BookManager
             HistoryForm historyForm = new HistoryForm();
             historyForm.Show();
         }
+
+        protected override void WndProc(ref Message m)
+        {
+            try
+            {
+                switch (m.Msg)
+                {
+                    case WM_COPYDATA:
+                        DBUtils.DBBook dBBook = new DBUtils.DBBook();
+                        dBBook.bookDataGridViewConnect(dataGridView1);
+                        label5.Text = dBBook.getBookCount().ToString();
+                        //COPYDATASTRUCT cds = (COPYDATASTRUCT)m.GetLParam(typeof(COPYDATASTRUCT));
+                        //byte[] buff = System.Text.Encoding.Default.GetBytes(cds.lpData);
+
+                        //COPYDATASTRUCT cs = new COPYDATASTRUCT();
+                        //cs.dwData = new IntPtr(0);
+                        //cs.cbData = buff.Length;
+                        //cs.lpData = cds.lpData;
+
+                        // 다시 보낼 Form2의 windows 헨들을 가져 온다.
+                        //IntPtr hwnd = FindWindow(null, "Form2");
+                        //SendMessage(hwnd, WM_COPYDATA, IntPtr.Zero, ref cs);
+                        break;
+                    default:
+                        base.WndProc(ref m);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
     }
 }
