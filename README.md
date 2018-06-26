@@ -16,9 +16,9 @@ insert into admin (adminId, adminPassword) values ('admin', 'admin1234');
 
 create table Books( 
 isbn varchar(12) primary key,
-name varchar(50),
-publisher varchar(50),
-page int,
+name varchar(50) not null,
+publisher varchar(50) not null,
+page int not null,
 userid int,
 username varchar(50),
 isBorrowed int,
@@ -42,6 +42,7 @@ borrowedat date,
 returnat date);
 
 create table history (
+	id int auto_increment primary key,
 	userId int,
 	userName varchar(500),
 	borrowedAt date,
