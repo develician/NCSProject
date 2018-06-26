@@ -14,26 +14,27 @@ create table admin(
 
 insert into admin (adminId, adminPassword) values ('admin', 'admin1234');
 
-create table Books( 
-isbn varchar(12) primary key,
+create table books( 
+id int not null auto_increment primary key,
+isbn varchar(12) not null,
 name varchar(50) not null,
 publisher varchar(50) not null,
 page int not null,
-userid int,
-username varchar(50),
+userId int,
+userName varchar(50),
 isBorrowed int,
-Borrowedat date,
-returnat date);
+borrowedAt date,
+returnedAt date);
 
 create table Users(
-id int primary key auto_increment,
+id int not null auto_increment primary key,
 name varchar(50),
 phone varchar(12),
 borrowednumber int,
 delayedcnt int);
 
 create table borrowed(
-id int primary key auto_increment,
+id int not null auto_increment primary key,
 userid int,
 username varchar(5),
 isbn varchar(12),
@@ -42,7 +43,7 @@ borrowedat date,
 returnat date);
 
 create table history (
-	id int auto_increment primary key,
+	id int not null auto_increment primary key,
 	userId int,
 	userName varchar(500),
 	borrowedAt date,
