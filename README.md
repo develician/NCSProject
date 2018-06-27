@@ -37,8 +37,7 @@ create table users(
 id int not null auto_increment primary key,
 name varchar(50) not null,
 phone varchar(11) not null,
-borrowedNumber int default 0,
-delayedCnt int default 0);
+borrowedNumber int default 0);
 
 drop table if exists borrowed;
 create table borrowed(
