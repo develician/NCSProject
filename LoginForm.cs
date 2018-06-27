@@ -47,6 +47,14 @@ namespace BookManager
                         return;
                     }
 
+                    Form1 form1 = new Form1();
+                    ////form1.Show();
+                    ////this.Visible = false;
+
+                    Program.ac.MainForm = form1;
+                    form1.Show();
+                    this.Close();
+
                 }
                 else
                 {
@@ -55,13 +63,7 @@ namespace BookManager
                 }
 
 
-                Form1 form1 = new Form1();
-                ////form1.Show();
-                ////this.Visible = false;
-
-                Program.ac.MainForm = form1;
-                form1.Show();
-                this.Close();
+               
 
             }
             catch (Exception exception)

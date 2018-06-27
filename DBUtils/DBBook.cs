@@ -12,7 +12,7 @@ namespace BookManager.DBUtils
     class DBBook
     {
         private MySqlConnection connection;
-
+        private int isExisting = 0;
         public DBBook()
         {
 
@@ -32,6 +32,7 @@ namespace BookManager.DBUtils
                 MySqlDataAdapter adapter = new MySqlDataAdapter(selectQuery, connection);
                 MySqlCommandBuilder builder = new MySqlCommandBuilder(adapter);
                 DataTable dt = new DataTable();
+                
                 adapter.Fill(dt);
 
                 dataGridView.DataSource = dt;
@@ -64,7 +65,11 @@ namespace BookManager.DBUtils
                 if (rd.Read())
                 {
                     MessageBox.Show("이미 존재하는 Isbn입니다.");
+                    isExisting = 1;
                     return;
+                } else
+                {
+                    isExisting = 0;
                 }
 
             } catch(Exception exception)
@@ -80,8 +85,12 @@ namespace BookManager.DBUtils
         {
 
             checkExistingIsbn(isbn);
+            if(isExisting == 1)
+            {
+                return;
+            }
 
-            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none;CharSet=UTF8");
             string insertQuery = "INSERT INTO books (isbn, name, publisher, page) VALUES (@isbn, @name, @publisher, @page);";
             MySqlCommand cmd = new MySqlCommand(insertQuery, connection);
             cmd.Parameters.AddWithValue("@isbn", isbn);
@@ -138,7 +147,7 @@ namespace BookManager.DBUtils
 
         public List<Models.Book> getSearchedBooks(int searchIndex, string searchWord)
         {
-            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none;CharSet=UTF8");
 
             string searchQuery = "";
 
@@ -220,8 +229,9 @@ namespace BookManager.DBUtils
 
         public void updateBookInfo(int id, string isbn, string name, string publisher, int page)
         {
-            checkExistingIsbn(isbn);
-            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+            
+            //checkExistingIsbn(isbn);
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none;CharSet=UTF8");
 
             try
             {

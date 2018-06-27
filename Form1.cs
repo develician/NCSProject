@@ -23,7 +23,8 @@ namespace BookManager
     public partial class Form1 : Form
     {
         public const int WM_COPYDATA = 0x4A;
-        
+        public const int WM_USERDATA = 0x4B;
+
         [DllImport("User32.dll")]
         public static extern IntPtr FindWindow(String lpClassName, String lpWindowName);
         [DllImport("user32.dll")]
@@ -41,7 +42,7 @@ namespace BookManager
             // 라벨 설정
             //label5.Text = DataManager.Books.Count.ToString();
             label5.Text = dBBook.getBookCount().ToString();
-            label6.Text = DataManager.Users.Count.ToString();
+            label6.Text = dBUser.getUserCount().ToString();
             label7.Text = DataManager.Books.Where((x) => x.isBorrowed).Count().ToString();
             label8.Text = DataManager.Books.Where((x) =>
             {
@@ -55,12 +56,16 @@ namespace BookManager
 
             //dataGridView2.DataSource = DataManager.Users;
             dBUser.userDataGridViewConnect(dataGridView2);
+            dataGridView2.ReadOnly = true;
+
             dataGridView1.CurrentCellChanged += DataGridView1_CurrentCellChanged;
             dataGridView2.CurrentCellChanged += DataGridView2_CurrentCellChanged;
 
             // 버튼 이벤트 설정
-            button1.Click += Button1_Click;
-            button2.Click += Button2_Click;
+            //button1.Click += Button1_Click;
+            button1.Click += borrowButtonClick;
+            //button2.Click += Button2_Click;
+            button2.Click += returnBook;
 
             // 대여 및 반납기록 클릭 이벤트
             대여및반납기록ToolStripMenuItem.Click += ShowHistoryForm;
@@ -234,6 +239,70 @@ namespace BookManager
             historyForm.Show();
         }
 
+        private void borrowButtonClick(object sender, EventArgs e)
+        {
+            DBUtils.DBBorrow dBBorrow = new DBUtils.DBBorrow();
+
+            string bookIsbn = textBox1.Text.ToString();
+            string bookName = textBox2.Text.ToString();
+            int bookId = 0;
+            if(textBox3.Text == "")
+            {
+                MessageBox.Show("유저 id를 선택해주세요.");
+                return;
+            }
+            int userId = int.Parse(textBox3.Text.ToString());
+            string userName = "";
+
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+
+                bookId = int.Parse(selectedRow.Cells["id"].Value.ToString());
+
+            }
+
+            if (dataGridView2.SelectedCells.Count > 0)
+            {
+                int selectedRowIndex = dataGridView2.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView2.Rows[selectedRowIndex];
+
+                userName = selectedRow.Cells["name"].Value.ToString();
+
+            }
+
+
+            dBBorrow.borrow(dataGridView1, dataGridView2, userId, userName, bookId, bookName, bookIsbn);
+        }
+
+        private void returnBook(object sender, EventArgs e)
+        {
+            DBUtils.DBReturn dBReturn = new DBUtils.DBReturn();
+
+            int bookId = 0;
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+
+                bookId = int.Parse(selectedRow.Cells["id"].Value.ToString());
+
+            }
+
+            if(textBox3.Text == "")
+            {
+                MessageBox.Show("대여자 id를 선택해주세요.");
+                return;
+            }
+
+            int userId = int.Parse(textBox3.Text.ToString());
+            string bookIsbn = textBox1.Text.ToString();
+            
+
+            dBReturn.returnBook(dataGridView1, dataGridView2, bookId, userId, bookIsbn);
+        }
+
         protected override void WndProc(ref Message m)
         {
             try
@@ -255,6 +324,12 @@ namespace BookManager
                         // 다시 보낼 Form2의 windows 헨들을 가져 온다.
                         //IntPtr hwnd = FindWindow(null, "Form2");
                         //SendMessage(hwnd, WM_COPYDATA, IntPtr.Zero, ref cs);
+                        break;
+                    case WM_USERDATA:
+                        DBUtils.DBUser dBUser = new DBUtils.DBUser();
+                        dBUser.userDataGridViewConnect(dataGridView2);
+                        int userCount = dBUser.getUserCount();
+                        label6.Text = userCount.ToString();
                         break;
                     default:
                         base.WndProc(ref m);

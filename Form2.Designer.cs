@@ -48,6 +48,7 @@
             this.searchCategoryCombo = new System.Windows.Forms.ComboBox();
             this.searchWordTextBox = new System.Windows.Forms.TextBox();
             this.bookBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.searchAllButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -168,6 +169,10 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(6, 20);
             this.dataGridView1.Name = "dataGridView1";
@@ -187,6 +192,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.searchAllButton);
             this.groupBox3.Controls.Add(this.searchButton);
             this.groupBox3.Controls.Add(this.searchCategoryCombo);
             this.groupBox3.Controls.Add(this.searchWordTextBox);
@@ -228,6 +234,15 @@
             // bookBindingSource
             // 
             this.bookBindingSource.DataSource = typeof(BookManager.Book);
+            // 
+            // searchAllButton
+            // 
+            this.searchAllButton.Location = new System.Drawing.Point(101, 64);
+            this.searchAllButton.Name = "searchAllButton";
+            this.searchAllButton.Size = new System.Drawing.Size(88, 23);
+            this.searchAllButton.TabIndex = 3;
+            this.searchAllButton.Text = "모두 보기";
+            this.searchAllButton.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
@@ -273,5 +288,6 @@
         private System.Windows.Forms.TextBox searchWordTextBox;
         private System.Windows.Forms.ComboBox searchCategoryCombo;
         private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Button searchAllButton;
     }
 }

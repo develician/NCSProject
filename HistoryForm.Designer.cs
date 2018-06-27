@@ -49,6 +49,10 @@
             // 
             // historyGridView
             // 
+            this.historyGridView.AllowUserToAddRows = false;
+            this.historyGridView.AllowUserToDeleteRows = false;
+            this.historyGridView.AllowUserToResizeColumns = false;
+            this.historyGridView.AllowUserToResizeRows = false;
             this.historyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.historyGridView.Location = new System.Drawing.Point(6, 31);
             this.historyGridView.Name = "historyGridView";

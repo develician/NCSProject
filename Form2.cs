@@ -25,6 +25,8 @@ namespace BookManager
     {
 
         public const int WM_COPYDATA = 0x4A;
+        public const int WM_USERDATA = 0x4B;
+
         [DllImport("User32.dll")]
         public static extern IntPtr FindWindow(String lpClassName, String lpWindowName);
         [DllImport("user32.dll")]
@@ -137,7 +139,10 @@ namespace BookManager
             searchCategoryCombo.Items.Add("책 이름");
             searchCategoryCombo.Items.Add("출판사");
             searchCategoryCombo.SelectedIndex = 0;
-            
+
+            searchAllButton.Click += searchAll;
+
+
         }
 
         private void DataGridView1_CurrentCellChanged(object sender, EventArgs e)
@@ -269,7 +274,8 @@ namespace BookManager
             int searchIndex = searchCategoryCombo.SelectedIndex;
             string searchWord = searchWordTextBox.Text.ToString();
             List<Models.Book> searchedBooks = dBBook.getSearchedBooks(searchIndex, searchWord);
-            MessageBox.Show(searchedBooks.Count.ToString());
+            var bindingSearchedList = new BindingList<Models.Book>(searchedBooks);
+            dataGridView1.DataSource = bindingSearchedList;
         }
 
         private void searchWordTextBox_TextChanged(object sender, EventArgs e)
@@ -302,6 +308,12 @@ namespace BookManager
 
             dBBook.removeSelectedBook(dataGridView1, id);
             sendInsertSuccessMessage();
+        }
+
+        private void searchAll(object sender, EventArgs e)
+        {
+            DBUtils.DBBook dBBook = new DBUtils.DBBook();
+            dBBook.bookDataGridViewConnect(dataGridView1);
         }
 
         protected override void WndProc(ref Message m)
