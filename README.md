@@ -31,7 +31,7 @@ id int not null auto_increment primary key,
 name varchar(50) not null,
 phone varchar(11) not null,
 borrowedNumber int,
-delayeCcnt int);
+delayedCnt int);
 
 create table borrowed(
 id int not null auto_increment primary key,
