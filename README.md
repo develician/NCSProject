@@ -3,6 +3,7 @@ NCSProject
 
 
 ```sql
+drop database if exists lib;
 create database lib;
 use lib;
 
