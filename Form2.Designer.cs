@@ -44,9 +44,9 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.searchWordTextBox = new System.Windows.Forms.TextBox();
-            this.searchCategoryCombo = new System.Windows.Forms.ComboBox();
             this.searchButton = new System.Windows.Forms.Button();
+            this.searchCategoryCombo = new System.Windows.Forms.ComboBox();
+            this.searchWordTextBox = new System.Windows.Forms.TextBox();
             this.bookBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -198,12 +198,14 @@
             this.groupBox3.Text = "책 검색하기";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
-            // searchWordTextBox
+            // searchButton
             // 
-            this.searchWordTextBox.Location = new System.Drawing.Point(141, 20);
-            this.searchWordTextBox.Name = "searchWordTextBox";
-            this.searchWordTextBox.Size = new System.Drawing.Size(451, 21);
-            this.searchWordTextBox.TabIndex = 0;
+            this.searchButton.Location = new System.Drawing.Point(20, 64);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(75, 23);
+            this.searchButton.TabIndex = 2;
+            this.searchButton.Text = "검색하기";
+            this.searchButton.UseVisualStyleBackColor = true;
             // 
             // searchCategoryCombo
             // 
@@ -214,14 +216,14 @@
             this.searchCategoryCombo.Size = new System.Drawing.Size(90, 20);
             this.searchCategoryCombo.TabIndex = 1;
             // 
-            // searchButton
+            // searchWordTextBox
             // 
-            this.searchButton.Location = new System.Drawing.Point(20, 64);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(75, 23);
-            this.searchButton.TabIndex = 2;
-            this.searchButton.Text = "검색하기";
-            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchWordTextBox.Location = new System.Drawing.Point(141, 20);
+            this.searchWordTextBox.Name = "searchWordTextBox";
+            this.searchWordTextBox.Size = new System.Drawing.Size(451, 21);
+            this.searchWordTextBox.TabIndex = 0;
+            this.searchWordTextBox.TextChanged += new System.EventHandler(this.searchWordTextBox_TextChanged);
+            this.searchWordTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchWordTextBox_KeyPress);
             // 
             // bookBindingSource
             // 

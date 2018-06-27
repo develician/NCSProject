@@ -148,10 +148,10 @@ namespace BookManager.DBUtils
 
             } else if(searchIndex == 1)
             {
-                searchQuery = "SELECT * FROM books WHERE isbn LIKE '%" + searchWord + "%'";
+                searchQuery = "SELECT * FROM books WHERE name LIKE '%" + searchWord + "%'";
             } else if (searchIndex == 2)
             {
-                searchQuery = "SELECT * FROM books WHERE isbn LIKE '%" + searchWord + "%'";
+                searchQuery = "SELECT * FROM books WHERE publisher LIKE '%" + searchWord + "%'";
             }
 
             MySqlCommand cmd = new MySqlCommand(searchQuery, connection);
@@ -173,13 +173,34 @@ namespace BookManager.DBUtils
                     book.name = rd["name"].ToString();
                     book.publisher = rd["publisher"].ToString();
                     book.page = int.Parse(rd["page"].ToString());
+
                     // null check
-                    book.userId = int.Parse(rd["userId"].ToString());
-                    //book.userName = rd["userName"].ToString();
-                    //book.isBorrowed = int.Parse(rd["isBorrowed"].ToString());
-                    //book.borrowedAt = DateTime.ParseExact(rd["borrowedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                    //book.returnedAt = DateTime.ParseExact(rd["returnedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                    //searchedBooksList.Add(book);
+                    if(!rd.IsDBNull(5))
+                    {
+                        book.userId = int.Parse(rd["userId"].ToString());
+                    }
+
+                    if (!rd.IsDBNull(6))
+                    {
+                        book.userName = rd["userName"].ToString();
+                    }
+                    if (!rd.IsDBNull(7))
+                    {
+                        book.isBorrowed = int.Parse(rd["isBorrowed"].ToString());
+                    }
+                    if (!rd.IsDBNull(8))
+                    {
+                        book.borrowedAt = DateTime.ParseExact(rd["borrowedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    if (!rd.IsDBNull(9))
+                    {
+                        book.returnedAt = DateTime.ParseExact(rd["returnedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                    //
+                    //
+                    //
+                    //
+                    searchedBooksList.Add(book);
                 }
 
                 
@@ -195,6 +216,61 @@ namespace BookManager.DBUtils
             }
 
             return searchedBooksList;
+        }
+
+        public void updateBookInfo(int id, string isbn, string name, string publisher, int page)
+        {
+            checkExistingIsbn(isbn);
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+
+            try
+            {
+                connection.Open();
+
+                string updateQuery = "UPDATE books SET isbn = @isbn, name = @name, publisher = @publisher, page = @page WHERE id = @id";
+                MySqlCommand cmd = new MySqlCommand(updateQuery, connection);
+                cmd.Parameters.AddWithValue("@isbn", isbn);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@publisher", publisher);
+                cmd.Parameters.AddWithValue("@page", page);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+
+
+
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("책 정보를 수정하는데 실패.");
+            } finally
+            {
+                connection.Close();
+            }
+        }
+
+        public void removeSelectedBook(DataGridView dataGridView, int id)
+        {
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+            string deleteQuery = "DELETE FROM books WHERE id = @id";
+            MySqlCommand cmd = new MySqlCommand(deleteQuery, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+
+            try
+            {
+                connection.Open();
+
+                cmd.ExecuteNonQuery();
+                bookDataGridViewConnect(dataGridView);
+
+            } catch(Exception exception)
+            {
+                MessageBox.Show("선택된 책을 삭제하는데 실패.");
+            } finally
+            {
+                connection.Close();
+            }
         }
 
 

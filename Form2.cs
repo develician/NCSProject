@@ -49,7 +49,7 @@ namespace BookManager
             //dataGridView1.DataSource = DataManager.Books;
             dBBook.bookDataGridViewConnect(dataGridView1);
             dataGridView1.ReadOnly = true;
-            //dataGridView1.CurrentCellChanged += DataGridView1_CurrentCellChanged;
+            dataGridView1.CurrentCellChanged += DataGridView1_CurrentCellChanged;
 
             // 버튼 설정
             button1.Click += insertNewBook;
@@ -111,23 +111,25 @@ namespace BookManager
             //    //}
             //};
 
-            button3.Click += (sender, e) =>
-            {
-                // 수정 버튼
-                try
-                {
-                    Book book = DataManager.Books.Single((x) => x.Isbn == textBox1.Text);
-                    DataManager.Books.Remove(book);
+            button3.Click += removeSelectedBook;
 
-                    dataGridView1.DataSource = null;
-                    dataGridView1.DataSource = DataManager.Books;
-                    DataManager.Save();
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show("존재하지 않는 도서입니다");
-                }
-            };
+            //button3.Click += (sender, e) =>
+            //{
+            //    // 수정 버튼
+            //    try
+            //    {
+            //        Book book = DataManager.Books.Single((x) => x.Isbn == textBox1.Text);
+            //        DataManager.Books.Remove(book);
+
+            //        dataGridView1.DataSource = null;
+            //        dataGridView1.DataSource = DataManager.Books;
+            //        DataManager.Save();
+            //    }
+            //    catch (Exception exception)
+            //    {
+            //        MessageBox.Show("존재하지 않는 도서입니다");
+            //    }
+            //};
 
             searchButton.Click += getSearchedBooks;
 
@@ -140,19 +142,39 @@ namespace BookManager
 
         private void DataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
-            try
+
+            if (dataGridView1.SelectedCells.Count > 0)
             {
-                // 그리드의 셀이 선택되면 텍스트박스에 글자 지정
-                Book book = dataGridView1.CurrentRow.DataBoundItem as Book;
-                textBox1.Text = book.Isbn;
-                textBox2.Text = book.Name;
-                textBox3.Text = book.Publisher;
-                textBox4.Text = book.Page.ToString();
-            }
-            catch (Exception exception)
-            {
+                int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+
+                string bookIsbn = selectedRow.Cells["isbn"].Value.ToString();
+                string bookName = selectedRow.Cells["name"].Value.ToString();
+                string publisher = selectedRow.Cells["publisher"].Value.ToString();
+                string page = selectedRow.Cells["page"].Value.ToString();
+
+                textBox1.Text = bookIsbn;
+                textBox2.Text = bookName;
+                textBox3.Text = publisher;
+                textBox4.Text = page;
 
             }
+
+
+
+            //try
+            //{
+            //    // 그리드의 셀이 선택되면 텍스트박스에 글자 지정
+            //    Book book = dataGridView1.CurrentRow.DataBoundItem as Book;
+            //    textBox1.Text = book.Isbn;
+            //    textBox2.Text = book.Name;
+            //    textBox3.Text = book.Publisher;
+            //    textBox4.Text = book.Page.ToString();
+            //}
+            //catch (Exception exception)
+            //{
+
+            //}
         }
 
         private void insertNewBook(object sender, EventArgs e)
@@ -248,7 +270,72 @@ namespace BookManager
             string searchWord = searchWordTextBox.Text.ToString();
             List<Models.Book> searchedBooks = dBBook.getSearchedBooks(searchIndex, searchWord);
             MessageBox.Show(searchedBooks.Count.ToString());
-        } 
+        }
+
+        private void searchWordTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchWordTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                getSearchedBooks(sender, e);
+            }
+        }
+
+        public void removeSelectedBook(object sender, EventArgs e)
+        {
+            DBUtils.DBBook dBBook = new DBUtils.DBBook();
+
+            int id = 0;
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+
+                id = int.Parse(selectedRow.Cells["id"].Value.ToString());
+            }
+
+
+
+            dBBook.removeSelectedBook(dataGridView1, id);
+            sendInsertSuccessMessage();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            try
+            {
+                switch (m.Msg)
+                {
+                    case WM_COPYDATA:
+                        DBUtils.DBBook dBBook = new DBUtils.DBBook();
+                        dBBook.bookDataGridViewConnect(dataGridView1);
+                        sendInsertSuccessMessage();
+                        //COPYDATASTRUCT cds = (COPYDATASTRUCT)m.GetLParam(typeof(COPYDATASTRUCT));
+                        //byte[] buff = System.Text.Encoding.Default.GetBytes(cds.lpData);
+
+                        //COPYDATASTRUCT cs = new COPYDATASTRUCT();
+                        //cs.dwData = new IntPtr(0);
+                        //cs.cbData = buff.Length;
+                        //cs.lpData = cds.lpData;
+
+                        // 다시 보낼 Form2의 windows 헨들을 가져 온다.
+                        //IntPtr hwnd = FindWindow(null, "Form2");
+                        //SendMessage(hwnd, WM_COPYDATA, IntPtr.Zero, ref cs);
+                        break;
+                    default:
+                        base.WndProc(ref m);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 
 

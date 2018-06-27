@@ -56,7 +56,7 @@ namespace BookManager
             //dataGridView2.DataSource = DataManager.Users;
             dBUser.userDataGridViewConnect(dataGridView2);
             dataGridView1.CurrentCellChanged += DataGridView1_CurrentCellChanged;
-            //dataGridView2.CurrentCellChanged += DataGridView2_CurrentCellChanged;
+            dataGridView2.CurrentCellChanged += DataGridView2_CurrentCellChanged;
 
             // 버튼 이벤트 설정
             button1.Click += Button1_Click;
@@ -68,16 +68,22 @@ namespace BookManager
 
         private void DataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
+            
 
-            //if (dataGridView1.SelectedCells.Count > 0)
-            //{
-            //    int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
-            //    DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
 
-            //    int bookIsbn = int.Parse(selectedRow.Cells["isbn"].Value.ToString());
+                string bookIsbn = selectedRow.Cells["isbn"].Value.ToString();
+                string bookName = selectedRow.Cells["name"].Value.ToString();
+                string userId = selectedRow.Cells["userId"].Value.ToString();
 
-            //    MessageBox.Show(bookIsbn.ToString());
-            //}
+                textBox1.Text = bookIsbn;
+                textBox2.Text = bookName;
+                textBox3.Text = userId;
+               
+            }
 
 
 
@@ -101,16 +107,29 @@ namespace BookManager
 
         private void DataGridView2_CurrentCellChanged(object sender, EventArgs e)
         {
-            try
+
+            if (dataGridView2.SelectedCells.Count > 0)
             {
-                // 그리드의 셀이 선택되면 텍스트박스에 글자 지정
-                User book = dataGridView2.CurrentRow.DataBoundItem as User;
-                textBox3.Text = book.Id.ToString();
-            }
-            catch (Exception exception)
-            {
+                int selectedRowIndex = dataGridView2.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView2.Rows[selectedRowIndex];
+
+                string userId = selectedRow.Cells["id"].Value.ToString();
+
+                textBox3.Text = userId;
 
             }
+
+
+            //try
+            //{
+            //    // 그리드의 셀이 선택되면 텍스트박스에 글자 지정
+            //    User book = dataGridView2.CurrentRow.DataBoundItem as User;
+            //    textBox3.Text = book.Id.ToString();
+            //}
+            //catch (Exception exception)
+            //{
+
+            //}
         }
 
         private void Button1_Click(object sender, EventArgs e)
