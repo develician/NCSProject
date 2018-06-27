@@ -22,16 +22,16 @@ publisher varchar(50) not null,
 page int not null,
 userId int,
 userName varchar(50),
-isBorrowed int,
+isBorrowed int default 0,
 borrowedAt date,
 returnedAt date);
 
 create table users(
 id int not null auto_increment primary key,
-name varchar(50),
-phone varchar(11),
-borrowedNumber int,
-delayeCcnt int);
+name varchar(50) not null,
+phone varchar(11) not null,
+borrowedNumber int default 0,
+delayedCnt int default 0);
 
 create table borrowed(
 id int not null auto_increment primary key,
