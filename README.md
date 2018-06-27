@@ -26,7 +26,7 @@ isBorrowed int,
 borrowedAt date,
 returnedAt date);
 
-create table Users(
+create table users(
 id int not null auto_increment primary key,
 name varchar(50),
 phone varchar(11),
