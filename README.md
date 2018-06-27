@@ -5,6 +5,9 @@ NCSProject
 ```sql
 drop database if exists lib;
 create database lib;
+
+ALTER SCHEMA lib  DEFAULT CHARACTER SET utf8 ;
+
 use lib;
 
 drop table if exists admin;
@@ -58,7 +61,7 @@ create table history (
 	bookIsbn varchar(12)	
 );
 
-ALTER SCHEMA lib  DEFAULT CHARACTER SET utf8 ;
+
 
 ALTER TABLE admin convert to character set UTF8;
 ALTER TABLE Books convert to character set UTF8;
