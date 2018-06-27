@@ -29,9 +29,9 @@ returnedAt date);
 create table Users(
 id int not null auto_increment primary key,
 name varchar(50),
-phone varchar(12),
-borrowednumber int,
-delayedcnt int);
+phone varchar(11),
+borrowedNumber int,
+delayeCcnt int);
 
 create table borrowed(
 id int not null auto_increment primary key,
