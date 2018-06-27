@@ -6,6 +6,7 @@ NCSProject
 create database lib;
 use lib;
 
+drop table if exists admin;
 create table admin(
 	adminId varchar(20) primary key,
 	adminPassword varchar(50)
@@ -14,6 +15,7 @@ create table admin(
 
 insert into admin (adminId, adminPassword) values ('admin', 'admin1234');
 
+drop table if exists books;
 create table books( 
 id int not null auto_increment primary key,
 isbn varchar(12) not null,
@@ -26,6 +28,7 @@ isBorrowed int default 0,
 borrowedAt date,
 returnedAt date);
 
+drop table if exists users;
 create table users(
 id int not null auto_increment primary key,
 name varchar(50) not null,
@@ -33,6 +36,7 @@ phone varchar(11) not null,
 borrowedNumber int default 0,
 delayedCnt int default 0);
 
+drop table if exists borrowed;
 create table borrowed(
 id int not null auto_increment primary key,
 userid int,
@@ -42,6 +46,7 @@ bookname varchar(30),
 borrowedat date,
 returnat date);
 
+drop table if exists history;
 create table history (
 	id int not null auto_increment primary key,
 	userId int,
