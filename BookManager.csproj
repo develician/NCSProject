@@ -101,6 +101,12 @@
       <DependentUpon>UpdateUserForm.cs</DependentUpon>
     </Compile>
     <Compile Include="User.cs" />
+    <Compile Include="UserInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInfoForm.Designer.cs">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="BookUpdateForm.resx">
       <DependentUpon>BookUpdateForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +137,9 @@
     </Compile>
     <EmbeddedResource Include="UpdateUserForm.resx">
       <DependentUpon>UpdateUserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInfoForm.resx">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\DataSources\Book.datasource" />
     <None Include="Properties\DataSources\User.datasource" />

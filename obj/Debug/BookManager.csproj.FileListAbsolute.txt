@@ -65,3 +65,23 @@ C:\Users\USER\c#\NCSProject\obj\Debug\BookManager.csproj.CopyComplete
 C:\Users\USER\c#\NCSProject\obj\Debug\BookManager.exe
 C:\Users\USER\c#\NCSProject\obj\Debug\BookManager.pdb
 C:\Users\USER\c#\NCSProject\obj\Debug\BookManager.UpdateUserForm.resources
+C:\Program Files\Git\ncs\NCSProject\bin\Debug\BookManager.exe.config
+C:\Program Files\Git\ncs\NCSProject\bin\Debug\BookManager.exe
+C:\Program Files\Git\ncs\NCSProject\bin\Debug\BookManager.pdb
+C:\Program Files\Git\ncs\NCSProject\bin\Debug\Google.Protobuf.dll
+C:\Program Files\Git\ncs\NCSProject\bin\Debug\MySql.Data.xml
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.csprojResolveAssemblyReference.cache
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.BookUpdateForm.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.Form1.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.Form2.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.Form3.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.HistoryForm.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.LoginForm.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.Properties.Resources.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.UpdateUserForm.resources
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.csproj.GenerateResource.cache
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.csproj.CoreCompileInputs.cache
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.csproj.CopyComplete
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.exe
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.pdb
+C:\Program Files\Git\ncs\NCSProject\obj\Debug\BookManager.UserInfoForm.resources

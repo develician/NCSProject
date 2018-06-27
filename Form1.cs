@@ -69,6 +69,7 @@ namespace BookManager
 
             // 대여 및 반납기록 클릭 이벤트
             대여및반납기록ToolStripMenuItem.Click += ShowHistoryForm;
+
         }
 
         private void DataGridView1_CurrentCellChanged(object sender, EventArgs e)
@@ -302,6 +303,8 @@ namespace BookManager
 
             dBReturn.returnBook(dataGridView1, dataGridView2, bookId, userId, bookIsbn);
         }
+
+   
 
         protected override void WndProc(ref Message m)
         {

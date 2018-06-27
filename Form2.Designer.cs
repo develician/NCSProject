@@ -44,11 +44,12 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.searchAllButton = new System.Windows.Forms.Button();
             this.searchButton = new System.Windows.Forms.Button();
             this.searchCategoryCombo = new System.Windows.Forms.ComboBox();
             this.searchWordTextBox = new System.Windows.Forms.TextBox();
             this.bookBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.searchAllButton = new System.Windows.Forms.Button();
+            this.getDelayedButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -192,6 +193,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.getDelayedButton);
             this.groupBox3.Controls.Add(this.searchAllButton);
             this.groupBox3.Controls.Add(this.searchButton);
             this.groupBox3.Controls.Add(this.searchCategoryCombo);
@@ -203,6 +205,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "책 검색하기";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
+            // 
+            // searchAllButton
+            // 
+            this.searchAllButton.Location = new System.Drawing.Point(101, 64);
+            this.searchAllButton.Name = "searchAllButton";
+            this.searchAllButton.Size = new System.Drawing.Size(88, 23);
+            this.searchAllButton.TabIndex = 3;
+            this.searchAllButton.Text = "모두 보기";
+            this.searchAllButton.UseVisualStyleBackColor = true;
             // 
             // searchButton
             // 
@@ -235,14 +246,14 @@
             // 
             this.bookBindingSource.DataSource = typeof(BookManager.Book);
             // 
-            // searchAllButton
+            // getDelayedButton
             // 
-            this.searchAllButton.Location = new System.Drawing.Point(101, 64);
-            this.searchAllButton.Name = "searchAllButton";
-            this.searchAllButton.Size = new System.Drawing.Size(88, 23);
-            this.searchAllButton.TabIndex = 3;
-            this.searchAllButton.Text = "모두 보기";
-            this.searchAllButton.UseVisualStyleBackColor = true;
+            this.getDelayedButton.Location = new System.Drawing.Point(203, 65);
+            this.getDelayedButton.Name = "getDelayedButton";
+            this.getDelayedButton.Size = new System.Drawing.Size(120, 21);
+            this.getDelayedButton.TabIndex = 4;
+            this.getDelayedButton.Text = "연체 된 것만 보기";
+            this.getDelayedButton.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
@@ -289,5 +300,6 @@
         private System.Windows.Forms.ComboBox searchCategoryCombo;
         private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.Button searchAllButton;
+        private System.Windows.Forms.Button getDelayedButton;
     }
 }

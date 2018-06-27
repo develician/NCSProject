@@ -52,6 +52,7 @@ namespace BookManager
             dBBook.bookDataGridViewConnect(dataGridView1);
             dataGridView1.ReadOnly = true;
             dataGridView1.CurrentCellChanged += DataGridView1_CurrentCellChanged;
+            dataGridView1.CellDoubleClick += cellDoubleClick;
 
             // 버튼 설정
             button1.Click += insertNewBook;
@@ -143,6 +144,7 @@ namespace BookManager
             searchAllButton.Click += searchAll;
 
 
+            getDelayedButton.Click += getDelayedButtonClick;
         }
 
         private void DataGridView1_CurrentCellChanged(object sender, EventArgs e)
@@ -314,6 +316,40 @@ namespace BookManager
         {
             DBUtils.DBBook dBBook = new DBUtils.DBBook();
             dBBook.bookDataGridViewConnect(dataGridView1);
+        }
+
+        private void getDelayedButtonClick(object sender, EventArgs e)
+        {
+
+            DBUtils.DBBook dBBook = new DBUtils.DBBook();
+            List<Models.Book> delayedBooks = dBBook.getDelayedBooks();
+
+            var bindingSearchedList = new BindingList<Models.Book>(delayedBooks);
+            dataGridView1.DataSource = bindingSearchedList;
+
+            
+        }
+
+        private void cellDoubleClick(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int selectedRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedRowIndex];
+
+                
+                int isBorrowed = int.Parse(selectedRow.Cells["isBorrowed"].Value.ToString());
+
+                if(isBorrowed == 1)
+                {
+                    int id = int.Parse(selectedRow.Cells["userId"].Value.ToString());
+                    UserInfoForm userInfoForm = new UserInfoForm(id);
+                    userInfoForm.Show();
+                }
+
+               
+
+            }
         }
 
         protected override void WndProc(ref Message m)

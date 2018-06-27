@@ -14,6 +14,7 @@ namespace BookManager.DBUtils
         private MySqlConnection connection;
 
         private int isBorrowed;
+        private int tooManyBorrowed;
 
         public DBBorrow()
         {
@@ -21,20 +22,38 @@ namespace BookManager.DBUtils
 
         }
 
-        public void setDelayCount()
+     
+        public void checkTooManyBorrowed(int id)
         {
             connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
 
-
+            string selectQuery = "SELECT borrowedNumber FROM users WHERE id = @userId";
+            MySqlCommand cmd = new MySqlCommand(selectQuery, connection);
+            cmd.Parameters.AddWithValue("@userId", id);
 
             try
             {
+                connection.Open();
+
+                MySqlDataReader rd = cmd.ExecuteReader();
+
+                if(rd.Read())
+                {
+                    if(int.Parse(rd["borrowedNumber"].ToString()) >= 3)
+                    {
+                        tooManyBorrowed = 1;
+                    }
+                }
 
             } catch(Exception exception)
             {
-
+                MessageBox.Show("몇권을 빌렸는지 가져오는데 실패.");
+            } finally
+            {
+                connection.Close();
             }
         }
+
 
         public void checkBorrowed(int id)
         {
@@ -67,6 +86,12 @@ namespace BookManager.DBUtils
 
         public void borrow(DataGridView bookDataGridView, DataGridView userDataGridView, int userId, string userName, int bookId, string bookName, string bookIsbn)
         {
+            checkTooManyBorrowed(userId);
+            if(tooManyBorrowed == 1)
+            {
+                MessageBox.Show("한번에 3권이상은 대여불가입니다.");
+                return;
+            }
             checkBorrowed(bookId);
             if(isBorrowed == 1)
             {

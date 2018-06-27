@@ -13,6 +13,7 @@ namespace BookManager.DBUtils
     {
         private MySqlConnection connection;
         private int isExisting = 0;
+        private int isBorrowed;
         public DBBook()
         {
 
@@ -184,7 +185,7 @@ namespace BookManager.DBUtils
                     book.page = int.Parse(rd["page"].ToString());
 
                     // null check
-                    if(!rd.IsDBNull(5))
+                    if (!rd.IsDBNull(5))
                     {
                         book.userId = int.Parse(rd["userId"].ToString());
                     }
@@ -199,13 +200,15 @@ namespace BookManager.DBUtils
                     }
                     if (!rd.IsDBNull(8))
                     {
-                        book.borrowedAt = DateTime.ParseExact(rd["borrowedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                        //book.borrowedAt = DateTime.ParseExact(rd["borrowedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                        book.borrowedAt = Convert.ToDateTime(rd["borrowedAt"]);
                     }
                     if (!rd.IsDBNull(9))
                     {
-                        book.returnedAt = DateTime.ParseExact(rd["returnedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                        //book.returnedAt = DateTime.ParseExact(rd["returnedAt"].ToString(), "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                        book.returnedAt = Convert.ToDateTime(rd["returnedAt"]);
                     }
-                    //
+
                     //
                     //
                     //
@@ -259,8 +262,45 @@ namespace BookManager.DBUtils
             }
         }
 
+        public void checkBorrowed(int id)
+        {
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+
+            string checkQuery = "SELECT isBorrowed FROM books WHERE id = @id";
+            MySqlCommand cmd = new MySqlCommand(checkQuery, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            //MessageBox.Show(id.ToString());
+            try
+            {
+                connection.Open();
+                MySqlDataReader rd = cmd.ExecuteReader();
+
+                if (rd.Read())
+                {
+                    isBorrowed = int.Parse(rd["isBorrowed"].ToString());
+
+                }
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("대여현황 확인 실패.");
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
         public void removeSelectedBook(DataGridView dataGridView, int id)
         {
+            checkBorrowed(id);
+            if(isBorrowed == 1)
+            {
+                MessageBox.Show("대여중인 책은 삭제할수 없습니다.");
+                return;
+            }
             connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
             string deleteQuery = "DELETE FROM books WHERE id = @id";
             MySqlCommand cmd = new MySqlCommand(deleteQuery, connection);
@@ -281,6 +321,53 @@ namespace BookManager.DBUtils
             {
                 connection.Close();
             }
+        }
+
+        public List<Models.Book> getDelayedBooks()
+        {
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none;CharSet=UTF8");
+            string selectDelayedBooksQuery = "SELECT * FROM books WHERE returnedAt < CURDATE();";
+            MySqlCommand getDelayedBooksCmd = new MySqlCommand(selectDelayedBooksQuery, connection);
+
+            List<Models.Book> delayedBooks = new List<Models.Book>();
+
+            try
+            {
+                connection.Open();
+
+                MySqlDataReader rd = getDelayedBooksCmd.ExecuteReader();
+
+                while (rd.Read())
+                {
+                    Models.Book delayedBook = new Models.Book();
+                    delayedBook.id = int.Parse(rd["id"].ToString());
+                    delayedBook.isbn = rd["isbn"].ToString();
+                    delayedBook.name = rd["name"].ToString();
+                    delayedBook.publisher = rd["publisher"].ToString();
+                    delayedBook.page = int.Parse(rd["page"].ToString());
+                    delayedBook.userId = int.Parse(rd["userId"].ToString());
+                    delayedBook.userName = rd["userName"].ToString();
+                    delayedBook.isBorrowed = int.Parse(rd["isBorrowed"].ToString());
+                    delayedBook.borrowedAt = Convert.ToDateTime(rd["borrowedAt"]);
+                    delayedBook.returnedAt = Convert.ToDateTime(rd["returnedAt"]);
+                    delayedBooks.Add(delayedBook);
+                }
+
+
+
+
+                
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("연체목록 갖고오기 실패.");
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return delayedBooks;
         }
 
 

@@ -13,9 +13,38 @@ namespace BookManager.DBUtils
     class DBUser
     {
         private MySqlConnection connection;
+        private int isBorrowed;
         public DBUser()
         {
 
+        }
+
+        public void checkBorrowed(int userId)
+        {
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
+            string selectQuery = "SELECT borrowedNumber FROM users WHERE id = @userId";
+            MySqlCommand cmd = new MySqlCommand(selectQuery, connection);
+            cmd.Parameters.AddWithValue("@userId", userId);
+
+            try
+            {
+                connection.Open();
+
+                int borrowedNumber = int.Parse(cmd.ExecuteScalar().ToString());
+
+                if(borrowedNumber > 0)
+                {
+                    isBorrowed = 1;
+                }
+
+
+            } catch(Exception exception)
+            {
+                MessageBox.Show("빌린책이 있는지 확인 실패.");
+            } finally
+            {
+                connection.Close();
+            }
         }
 
         public void userDataGridViewConnect(DataGridView dataGridView)
@@ -43,6 +72,8 @@ namespace BookManager.DBUtils
                 connection.Close();
             }
         }
+
+        
 
         public void insertUser(DataGridView dataGridView, string name, string phone)
         {
@@ -105,6 +136,12 @@ namespace BookManager.DBUtils
 
         public void removeSelectedUser(DataGridView dataGridView, int id)
         {
+            checkBorrowed(id);
+            if(isBorrowed == 1)
+            {
+                MessageBox.Show("대여중인 회원은 삭제 불가입니다.");
+                return;
+            }
             connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none");
             string removeQuery = "DELETE FROM users WHERE id = @id";
             MySqlCommand cmd = new MySqlCommand(removeQuery, connection);
@@ -125,6 +162,40 @@ namespace BookManager.DBUtils
             {
                 connection.Close();
             }
+        }
+
+        public Models.User getUserInfo(int userId)
+        {
+            
+            connection = new MySqlConnection("server=localhost;user id=root;password=root1234;persistsecurityinfo=True;port=3306;database=lib;SslMode=none;CharSet=UTF8");
+
+            string selectQuery = "SELECT * FROM users WHERE id = @userId";
+            MySqlCommand cmd = new MySqlCommand(selectQuery, connection);
+            cmd.Parameters.AddWithValue("@userId", userId);
+            Models.User user = new Models.User();
+            try
+            {
+                connection.Open();
+
+                MySqlDataReader rd = cmd.ExecuteReader();
+                
+                if(rd.Read())
+                {
+                    user.id = int.Parse(rd["id"].ToString());
+                    user.name = rd["name"].ToString();
+                    user.phone = rd["phone"].ToString();
+                    user.borrowedNumber = int.Parse(rd["borrowedNumber"].ToString());
+                }
+
+            } catch(Exception exception)
+            {
+                MessageBox.Show("유저 정보 불러오기 실패.");
+            } finally
+            {
+                connection.Close();
+            }
+
+            return user;
         }
 
         public void updateUserInfo(int userId, string name, string phone)
@@ -187,7 +258,6 @@ namespace BookManager.DBUtils
                     user.name = rd["name"].ToString();
                     user.phone = rd["phone"].ToString();
                     user.borrowedNumber = int.Parse(rd["borrowedNumber"].ToString());
-                    user.delayedCnt = int.Parse(rd["delayedCnt"].ToString());
 
                     searchedUsersList.Add(user);
                 }

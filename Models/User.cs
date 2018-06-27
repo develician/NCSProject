@@ -12,6 +12,6 @@ namespace BookManager.Models
         public string name { get; set; }
         public string phone { get; set; }
         public int borrowedNumber { get; set; }
-        public int delayedCnt { get; set; }
+        //public int delayedCnt { get; set; }
     }
 }
