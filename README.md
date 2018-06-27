@@ -22,7 +22,7 @@ publisher varchar(50) not null,
 page int not null,
 userId int,
 userName varchar(50),
-isBorrowed int,
+isBorrowed int default 0,
 borrowedAt date,
 returnedAt date);
 
